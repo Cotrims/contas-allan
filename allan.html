@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Site do Allan</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Urbanist", sans-serif;
+        background: whitesmoke;
+        display: flex;
+        height: 100vh;
+      }
+
+      nav {
+        background: pink;
+        padding: 50px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        min-width: 250px;
+      }
+
+      nav ul {
+        list-style: none;
+      }
+
+      nav ul li {
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-bottom: 5px;
+      }
+
+      nav ul .selecionado {
+        font-weight: 600;
+        background: salmon !important;
+      }
+
+      main > div {
+        display: flex;
+        padding: 10vh 10vw;
+        flex-direction: column;
+      }
+
+      .op1 form {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .op1 form div {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 7fr;
+      }
+
+      .op1 form input[type="number"] {
+        border: 1px solid lightgray;
+        margin: 8px 0;
+        border-radius: 3px;
+        padding: 10px 12px;
+        font-family: "Courier New", Courier, monospace;
+      }
+
+      .op1 form input[type="submit"] {
+        margin: 8px 0;
+        border: none;
+        padding: 10px;
+        border-radius: 3px;
+        background: salmon;
+        color: #fff;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      @media only screen and (max-width: 800px) {
+        body {
+          flex-direction: column;
+        }
+
+        nav {
+          padding: 10px 20px !important;
+        }
+
+        main > div {
+          padding: 5v;
+        }
+      }
+    </style>
+
+    <script>
+      document.readyState !== "loading"
+        ? load()
+        : document.addEventListener("DOMContentLoaded", load);
+
+      function load() {
+        const valorRendimento = document.querySelector("#valor-rendimento");
+        const comparacaoRendimento = document.querySelector(
+          "#comparacao-rendimento"
+        );
+        const conclusao = document.querySelector("#conclusao");
+
+        const operacaoUm = document.querySelector("#operacao-um");
+
+        operacaoUm.addEventListener("click", (e) => {
+          e.preventDefault();
+
+          const aluguel = document.querySelector("#aluguel").value;
+          const capital = document.querySelector("#capital").value;
+          const taxa = 0.71;
+
+          const resultado = document.querySelector("#resultado-op1");
+
+          const valorFinal = capital * (taxa / 100);
+
+          valorRendimento.innerHTML = `Valor do rendimento: R$${valorFinal.toFixed(2).replace(".", ",")}/mês`;
+
+          if (aluguel > valorFinal.toFixed(2)) {
+            comparacaoRendimento.innerHTML = "Rendimento < Alugel";
+
+            conclusao.innerHTML = `
+                Então, a <strong>compra</strong> é mais vantajosa! Rendendo
+                <strong> R$${(aluguel - valorFinal).toFixed(2).replace(".", ",")} a mais!</strong> 
+              `;
+          } else if (aluguel < valorFinal.toFixed(2)) {
+            comparacaoRendimento.innerHTML = "Rendimento > Alugel";
+
+            conclusao.innerHTML = `
+                Então, a <strong>aplicação</strong> é mais vantajosa! Rendendo
+                <strong> R$${(valorFinal - aluguel).toFixed(2).replace(".", ",")} a mais!</strong> 
+              `;
+          } else {
+            comparacaoRendimento.innerHTML = "Rendimento = Alugel";
+
+            conclusao.innerHTML = `
+                Então, tanto a compra quanto a aplicação resultarão no <strong>mesmo rendimento!</strong> 
+              `;
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <nav>
+      <h1>Operações</h1>
+      <ul>
+        <li class="menu-op1 selecionado">Comprar ou Aplicar</li>
+      </ul>
+    </nav>
+    <main>
+      <div class="op1">
+        <h3>Comprar um imóvel ou aplicar o capital no Tesouro Nacional?</h3>
+        <small>
+          <p>
+            Para o cálculo será considerada a taxa Selic (maio/2023) = 0,71%
+          </p>
+        </small>
+
+        <br />
+
+        <p>Insira os valores nos campos abaixo:</p>
+
+        <form action="">
+          <div>
+            <label for="aluguel">Alugel:</label>
+            <input required type="number" name="aluguel" id="aluguel" />
+          </div>
+          <div>
+            <label for="valor">Capital:</label>
+            <input required type="number" name="capital" id="capital" />
+          </div>
+          <input type="submit" name="" id="operacao-um" value="Calcular" />
+        </form>
+
+        <div id="resultado">
+          <small>
+            <p>
+              Utilizarando o conceito de Séries de Pagamentos Infinitas temos:
+            </p>
+          </small>
+
+          <br />
+
+          <div class="valores">
+            <p><span id="valor-rendimento"></span></p>
+            <p id="comparacao-rendimento"></p>
+            <p id="conclusao"></p>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
